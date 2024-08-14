@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  ConflictException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './repositories/users.repository';
@@ -10,16 +6,20 @@ import { NotFoundError } from 'src/common/errors/types/NotFoundError';
 import { LoginUserDto } from './dto/login-user.dto';
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcryptjs';
+import { UserEntity } from './entities/user.entity';
+import { ConflictError } from 'src/common/errors/types/ConflictError';
+import { UnauthorizedError } from 'src/common/errors/types/UnauthorizedError';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly repository: UsersRepository) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
+    // Definindo que o retorno será um usuário
     const { email, password } = createUserDto;
     const userExists = await this.repository.findByEmail(email);
     if (userExists) {
-      throw new ConflictException('Email já está em uso.');
+      throw new ConflictError('Email já está em uso.');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -28,7 +28,8 @@ export class UsersService {
     return this.repository.create(createUserDto);
   }
 
-  async findAll() {
+  async findAll(): Promise<UserEntity[]> {
+    // Definindo que o retorno será uma lista de usuários
     const users = await this.repository.findAll();
     if (users.length === 0) {
       throw new NotFoundError('Nenhum usuário encontrado.');
@@ -36,7 +37,7 @@ export class UsersService {
     return users;
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<UserEntity> {
     const user = await this.repository.findOne(id);
     if (!user) {
       throw new NotFoundError('Usuário não encontrado.');
@@ -44,7 +45,7 @@ export class UsersService {
     return user;
   }
 
-  async findByEmail(email: string) {
+  async findByEmail(email: string): Promise<UserEntity> {
     const user = await this.repository.findByEmail(email);
     if (!user) {
       throw new NotFoundError('Usuário não encontrado.');
@@ -52,7 +53,7 @@ export class UsersService {
     return user;
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {
     const user = await this.repository.findOne(id);
     if (!user) {
       throw new NotFoundError('Usuário não encontrado.');
@@ -64,7 +65,7 @@ export class UsersService {
     return this.repository.update(id, updateUserDto);
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<UserEntity> {
     const user = await this.repository.findOne(id);
     if (!user) {
       throw new NotFoundError('Usuário não encontrado.');
@@ -78,12 +79,12 @@ export class UsersService {
 
     const user = await this.repository.findByEmail(email);
     if (!user) {
-      throw new UnauthorizedException('Credenciais inválidas.');
+      throw new UnauthorizedError('Credenciais inválidas.');
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Credenciais inválidas.');
+      throw new UnauthorizedError('Credenciais inválidas.');
     }
 
     const token = jwt.sign(
