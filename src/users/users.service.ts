@@ -22,6 +22,7 @@ export class UsersService {
       throw new ConflictException('Email já está em uso.');
     }
 
+    // Criptografa a senha antes de salvar
     const hashedPassword = await bcrypt.hash(password, 10);
     createUserDto.password = hashedPassword;
 
@@ -74,7 +75,12 @@ export class UsersService {
     const { email, password } = loginUserDto;
 
     const user = await this.repository.findByEmail(email);
-    if (!user || user.password !== password) {
+    if (!user) {
+      throw new UnauthorizedException('Credenciais inválidas.');
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
       throw new UnauthorizedException('Credenciais inválidas.');
     }
 
