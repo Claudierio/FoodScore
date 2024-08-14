@@ -58,6 +58,9 @@ export class UsersService {
       throw new NotFoundError('Usuário não encontrado.');
     }
 
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    updateUserDto.password = hashedPassword;
+
     return this.repository.update(id, updateUserDto);
   }
 
@@ -74,7 +77,12 @@ export class UsersService {
     const { email, password } = loginUserDto;
 
     const user = await this.repository.findByEmail(email);
-    if (!user || user.password !== password) {
+    if (!user) {
+      throw new UnauthorizedException('Credenciais inválidas.');
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
       throw new UnauthorizedException('Credenciais inválidas.');
     }
 
