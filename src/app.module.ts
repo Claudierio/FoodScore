@@ -5,9 +5,10 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { RestaurantsModule } from './restaurants/restaurants.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { DishesModule } from './dishes/dishes.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), UsersModule, RestaurantsModule, ReviewsModule],
+  imports: [ConfigModule.forRoot(), UsersModule, RestaurantsModule, ReviewsModule, DishesModule],
   controllers: [AppController],
   providers: [AppService],
 })

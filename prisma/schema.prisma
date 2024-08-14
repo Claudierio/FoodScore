@@ -26,8 +26,24 @@ model Restaurant {
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   reviews   Review[] // Relação de 1 para N (1 restaurante pode ter várias avaliações)
+  dishes    Dish[]   // Relacionamento com o modelo Dish
   @@map("restaurants")
 }
+
+model Dish {
+  id           String   @id @default(uuid())
+  name         String
+  description  String
+  price        Float
+  restaurantId String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+
+  @@map("dishes")
+}
+
 
 model Review {
   id           String      @id @default(uuid())
