@@ -8,36 +8,31 @@ import { Injectable } from '@nestjs/common';
 export class RestaurantsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(
-    createRestaurantDto: CreateRestaurantDto,
-  ): Promise<RestaurantEntity> {
+  async create(createRestaurantDto: CreateRestaurantDto) {
     return this.prisma.restaurant.create({ data: createRestaurantDto });
   }
 
-  async findAll(): Promise<RestaurantEntity[]> {
+  async findAll() {
     return this.prisma.restaurant.findMany();
   }
 
-  async findOne(id: string): Promise<RestaurantEntity> {
+  async findOne(id: string) {
     return this.prisma.restaurant.findUnique({ where: { id } });
   }
 
-  // apenas para checagem, ainda não será uma rota
+  // apenas para checagem na hora de criar um restaurante, ainda não será uma rota
   async findByPhone(phone: string) {
     return this.prisma.restaurant.findUnique({ where: { phone } });
   }
 
-  async update(
-    id: string,
-    updateRestaurantDto: UpdateRestaurantDto,
-  ): Promise<RestaurantEntity> {
+  async update(id: string, updateRestaurantDto: UpdateRestaurantDto) {
     return this.prisma.restaurant.update({
       where: { id },
       data: updateRestaurantDto,
     });
   }
 
-  async remove(id: string): Promise<RestaurantEntity> {
+  async remove(id: string) {
     return this.prisma.restaurant.delete({ where: { id } });
   }
 }

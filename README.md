@@ -43,6 +43,12 @@ $ npm run start:dev
 
 # production mode
 $ npm run start:prod
+
+# gerar o sql dos models no schema
+$ npx prisma generate
+
+# criar as tabelas
+$ npx prisma migrate dev
 ```
 
 ## Test
