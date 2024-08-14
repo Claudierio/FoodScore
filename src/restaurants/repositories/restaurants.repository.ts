@@ -1,7 +1,6 @@
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateRestaurantDto } from '../dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from '../dto/update-restaurant.dto';
-import { RestaurantEntity } from '../entities/restaurant.entity';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -13,11 +12,67 @@ export class RestaurantsRepository {
   }
 
   async findAll() {
-    return this.prisma.restaurant.findMany();
+    return this.prisma.restaurant.findMany({
+      include: {
+        reviews: {
+          select: {
+            id: true,
+            rating: true,
+            description: true,
+            createdAt: true,
+            updatedAt: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              },
+            },
+            restaurant: {
+              select: {
+                id: true,
+                name: true,
+                address: true,
+                phone: true,
+              },
+            },
+          },
+        },
+      },
+    });
   }
 
   async findOne(id: string) {
-    return this.prisma.restaurant.findUnique({ where: { id } });
+    return this.prisma.restaurant.findUnique({
+      where: { id },
+
+      include: {
+        reviews: {
+          select: {
+            id: true,
+            rating: true,
+            description: true,
+            createdAt: true,
+            updatedAt: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              },
+            },
+            restaurant: {
+              select: {
+                id: true,
+                name: true,
+                address: true,
+                phone: true,
+              },
+            },
+          },
+        },
+      },
+    });
   }
 
   // apenas para checagem na hora de criar um restaurante, ainda não será uma rota
@@ -33,6 +88,34 @@ export class RestaurantsRepository {
   }
 
   async remove(id: string) {
-    return this.prisma.restaurant.delete({ where: { id } });
+    return this.prisma.restaurant.delete({
+      where: { id },
+      include: {
+        reviews: {
+          select: {
+            id: true,
+            rating: true,
+            description: true,
+            createdAt: true,
+            updatedAt: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              },
+            },
+            restaurant: {
+              select: {
+                id: true,
+                name: true,
+                address: true,
+                phone: true,
+              },
+            },
+          },
+        },
+      },
+    });
   }
 }

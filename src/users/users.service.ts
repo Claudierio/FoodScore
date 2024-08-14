@@ -15,7 +15,6 @@ export class UsersService {
   constructor(private readonly repository: UsersRepository) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserEntity> {
-    // Definindo que o retorno será um usuário
     const { email, password } = createUserDto;
     const userExists = await this.repository.findByEmail(email);
     if (userExists) {
@@ -29,7 +28,6 @@ export class UsersService {
   }
 
   async findAll(): Promise<UserEntity[]> {
-    // Definindo que o retorno será uma lista de usuários
     const users = await this.repository.findAll();
     if (users.length === 0) {
       throw new NotFoundError('Nenhum usuário encontrado.');
@@ -90,9 +88,7 @@ export class UsersService {
     const token = jwt.sign(
       { userId: user.id, email: user.email },
       process.env.JWT_SECRET,
-      {
-        expiresIn: '1h',
-      },
+      { expiresIn: '1h' },
     );
 
     return {
