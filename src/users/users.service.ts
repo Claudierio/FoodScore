@@ -1,21 +1,29 @@
-import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './repositories/users.repository';
 import { NotFoundError } from 'src/common/errors/types/NotFoundError';
 import { LoginUserDto } from './dto/login-user.dto';
 import * as jwt from 'jsonwebtoken';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly repository: UsersRepository) {}
 
   async create(createUserDto: CreateUserDto) {
-    const { email } = createUserDto;
+    const { email, password } = createUserDto;
     const userExists = await this.repository.findByEmail(email);
     if (userExists) {
       throw new ConflictException('Email já está em uso.');
     }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    createUserDto.password = hashedPassword;
 
     return this.repository.create(createUserDto);
   }
@@ -70,11 +78,16 @@ export class UsersService {
       throw new UnauthorizedException('Credenciais inválidas.');
     }
 
-    const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
-    });
+    const token = jwt.sign(
+      { userId: user.id, email: user.email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '1h',
+      },
+    );
 
     return {
+      data: user,
       message: 'Login efetuado com sucesso',
       token,
     };
