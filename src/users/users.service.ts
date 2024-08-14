@@ -22,7 +22,6 @@ export class UsersService {
       throw new ConflictException('Email já está em uso.');
     }
 
-    // Criptografa a senha antes de salvar
     const hashedPassword = await bcrypt.hash(password, 10);
     createUserDto.password = hashedPassword;
 
@@ -58,6 +57,9 @@ export class UsersService {
     if (!user) {
       throw new NotFoundError('Usuário não encontrado.');
     }
+
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    updateUserDto.password = hashedPassword;
 
     return this.repository.update(id, updateUserDto);
   }

@@ -38,6 +38,11 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
+  @Post('email')
+  findByEmail(@Body('email') email: string) {
+    return this.usersService.findByEmail(email);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
