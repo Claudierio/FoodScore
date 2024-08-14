@@ -1,27 +1,43 @@
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateRestaurantDto } from '../dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from '../dto/update-restaurant.dto';
+import { RestaurantEntity } from '../entities/restaurant.entity';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class RestaurantsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createRestaurantDto: CreateRestaurantDto) {
-    return 'This action adds a new restaurant';
+  async create(
+    createRestaurantDto: CreateRestaurantDto,
+  ): Promise<RestaurantEntity> {
+    return this.prisma.restaurant.create({ data: createRestaurantDto });
   }
 
-  findAll() {
-    return `This action returns all restaurants`;
+  async findAll(): Promise<RestaurantEntity[]> {
+    return this.prisma.restaurant.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} restaurant`;
+  async findOne(id: string): Promise<RestaurantEntity> {
+    return this.prisma.restaurant.findUnique({ where: { id } });
   }
 
-  update(id: number, updateRestaurantDto: UpdateRestaurantDto) {
-    return `This action updates a #${id} restaurant`;
+  // apenas para checagem, ainda não será uma rota
+  async findByPhone(phone: string) {
+    return this.prisma.restaurant.findUnique({ where: { phone } });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} restaurant`;
+  async update(
+    id: string,
+    updateRestaurantDto: UpdateRestaurantDto,
+  ): Promise<RestaurantEntity> {
+    return this.prisma.restaurant.update({
+      where: { id },
+      data: updateRestaurantDto,
+    });
+  }
+
+  async remove(id: string): Promise<RestaurantEntity> {
+    return this.prisma.restaurant.delete({ where: { id } });
   }
 }

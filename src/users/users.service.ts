@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  ConflictException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './repositories/users.repository';
@@ -11,6 +7,8 @@ import { LoginUserDto } from './dto/login-user.dto';
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcryptjs';
 import { UserEntity } from './entities/user.entity';
+import { ConflictError } from 'src/common/errors/types/ConflictError';
+import { UnauthorizedError } from 'src/common/errors/types/UnauthorizedError';
 
 @Injectable()
 export class UsersService {
@@ -21,7 +19,7 @@ export class UsersService {
     const { email, password } = createUserDto;
     const userExists = await this.repository.findByEmail(email);
     if (userExists) {
-      throw new ConflictException('Email já está em uso.');
+      throw new ConflictError('Email já está em uso.');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -81,12 +79,12 @@ export class UsersService {
 
     const user = await this.repository.findByEmail(email);
     if (!user) {
-      throw new UnauthorizedException('Credenciais inválidas.');
+      throw new UnauthorizedError('Credenciais inválidas.');
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Credenciais inválidas.');
+      throw new UnauthorizedError('Credenciais inválidas.');
     }
 
     const token = jwt.sign(
