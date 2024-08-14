@@ -12,6 +12,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { FindByEmailDto } from './dto/find-by-email.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -39,8 +40,8 @@ export class UsersController {
   }
 
   @Post('email')
-  findByEmail(@Body('email') email: string) {
-    return this.usersService.findByEmail(email);
+  findByEmail(@Body() findByEmailDto: FindByEmailDto) {
+    return this.usersService.findByEmail(findByEmailDto.email);
   }
 
   @Patch(':id')
