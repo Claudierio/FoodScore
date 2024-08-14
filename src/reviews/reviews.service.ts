@@ -4,6 +4,7 @@ import { UpdateReviewDto } from './dto/update-review.dto';
 import { ReviewsRepository } from './repositories/reviews.repository';
 import { ReviewEntity } from './entities/review.entity';
 import { BadRequestError } from 'src/common/errors/types/BadRequestError';
+import { NotFoundError } from 'src/common/errors/types/NotFoundError';
 
 @Injectable()
 export class ReviewsService {
@@ -18,21 +19,37 @@ export class ReviewsService {
   }
 
   async findAll(): Promise<ReviewEntity[]> {
+    const reviews = await this.repository.findAll();
+    if (reviews) {
+      throw new NotFoundError('Nenhuma avaliação encontrada.');
+    }
     return this.repository.findAll();
   }
 
   async findOne(id: string): Promise<ReviewEntity> {
-    return this.repository.findOne(id);
+    const review = await this.repository.findOne(id);
+    if (!review) {
+      throw new NotFoundError('Avaliação não encontrada.');
+    }
+    return review;
   }
 
   async update(
     id: string,
     updateReviewDto: UpdateReviewDto,
   ): Promise<ReviewEntity> {
+    const isExist = await this.repository.findOne(id);
+    if (!isExist) {
+      throw new NotFoundError('Avaliação não encontrada.');
+    }
     return this.repository.update(id, updateReviewDto);
   }
 
   async remove(id: string): Promise<ReviewEntity> {
+    const isExist = await this.repository.findOne(id);
+    if (!isExist) {
+      throw new NotFoundError('Avaliação não encontrada.');
+    }
     return await this.repository.remove(id);
   }
 }
