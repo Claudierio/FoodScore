@@ -19,6 +19,25 @@ export class ReviewsDishesRepository {
     return this.prisma.reviewDish.findUnique({ where: { id } });
   }
 
+  async findAllByDishId(dishId: string) {
+    return this.prisma.reviewDish.findMany({
+      where: { dishId },
+    });
+  }
+
+  async getAverageRatingByDishId(dishId: string): Promise<number> {
+    const result = await this.prisma.reviewDish.aggregate({
+      _avg: {
+        rating: true,
+      },
+      where: {
+        dishId,
+      },
+    });
+
+    return result._avg.rating || 0;
+  }
+
   async update(id: string, updateReviewsDishDto: UpdateReviewsDishDto) {
     return this.prisma.reviewDish.update({
       where: { id },

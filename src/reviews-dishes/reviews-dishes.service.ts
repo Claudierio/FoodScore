@@ -6,12 +6,15 @@ import { BadRequestError } from 'src/common/errors/types/BadRequestError';
 import { UsersRepository } from 'src/users/repositories/users.repository';
 import { NotFoundError } from 'src/common/errors/types/NotFoundError';
 import { ReviewsDishEntity } from './entities/reviews-dish.entity';
+import { roundToNearestHalf } from 'src/common/functions/arredonde-number.function';
+import { DishesRepository } from 'src/dishes/repositories/dishes.repository';
 
 @Injectable()
 export class ReviewsDishesService {
   constructor(
     private readonly repository: ReviewsDishesRepository,
     private readonly usersRepository: UsersRepository,
+    private readonly dishesRepository: DishesRepository,
   ) {}
 
   async create(
@@ -45,6 +48,25 @@ export class ReviewsDishesService {
       throw new NotFoundError('Avaliação não encontrada.');
     }
     return review;
+  }
+
+  async getAverageRating(dishId: string) {
+    const reviews = await this.repository.findAllByDishId(dishId);
+    const totalReviews = reviews.length;
+
+    const isDishExist = await this.dishesRepository.findOne(dishId);
+
+    const averageRating =
+      await this.repository.getAverageRatingByDishId(dishId);
+    if (!isDishExist) {
+      throw new NotFoundError('Prato não encontrado.');
+    }
+
+    return {
+      dishId,
+      averageRating: roundToNearestHalf(averageRating),
+      totalReviews,
+    };
   }
 
   async update(

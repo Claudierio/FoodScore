@@ -32,6 +32,11 @@ export class ReviewsDishesController {
     return this.reviewsDishesService.findOne(id);
   }
 
+  @Get(':id/average-rating')
+  getAverageRating(@Param('id') dishId: string) {
+    return this.reviewsDishesService.getAverageRating(dishId);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,
