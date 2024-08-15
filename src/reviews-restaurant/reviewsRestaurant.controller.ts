@@ -39,6 +39,12 @@ export class ReviewsRestaurantController {
     return this.reviewsRestaurantService.findOne(id);
   }
 
+  @Get(':id/average-restaurants')
+  @UseGuards(AuthGuard)
+  getAverageRating(@Param('id') dishId: string) {
+    return this.reviewsRestaurantService.getAverageRating(dishId);
+  }
+
   @Patch(':id')
   @UseGuards(AuthGuard)
   update(
