@@ -99,6 +99,7 @@ export class UsersService {
       data: user,
       message: 'Login efetuado com sucesso',
       token,
+      name: user.name,
     };
   }
 }
