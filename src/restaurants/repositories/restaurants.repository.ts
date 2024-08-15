@@ -38,6 +38,7 @@ export class RestaurantsRepository {
             },
           },
         },
+        dishes: true,
       },
     });
   }
@@ -71,6 +72,7 @@ export class RestaurantsRepository {
             },
           },
         },
+        dishes: true,
       },
     });
   }
@@ -115,6 +117,7 @@ export class RestaurantsRepository {
             },
           },
         },
+        dishes: true,
       },
     });
   }

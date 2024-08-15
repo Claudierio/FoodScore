@@ -39,8 +39,13 @@ export class ReviewsService {
     updateReviewDto: UpdateReviewDto,
   ): Promise<ReviewEntity> {
     const isExist = await this.repository.findOne(id);
+    const { description } = updateReviewDto;
     if (!isExist) {
       throw new NotFoundError('Avaliação não encontrada.');
+    } else if (description.length > 500) {
+      throw new BadRequestError(
+        'Descrição do prato não pode ter mais de 500 caracteres',
+      );
     }
     return this.repository.update(id, updateReviewDto);
   }

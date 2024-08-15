@@ -4,21 +4,21 @@ import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
 export class CreateDishDto {
   @IsString()
   @IsNotEmpty()
-  @ApiProperty({ description: 'Name of the dish.' })
+  @ApiProperty({ description: 'Nome do prato.' })
   name: string;
 
   @IsString()
   @IsNotEmpty()
-  @ApiProperty({ description: 'Description of the dish.' })
+  @ApiProperty({ description: 'Descrição do prato.' })
   description: string;
 
   @IsNumber()
   @IsNotEmpty()
-  @ApiProperty({ description: 'Price of the dish.' })
+  @ApiProperty({ description: 'Preço do prato.' })
   price: number;
 
   @IsString()
   @IsNotEmpty()
-  @ApiProperty({ description: 'ID of the restaurant to which the dish belongs.' })
+  @ApiProperty({ description: 'ID do restaurante ao qual o prato pertence.' })
   restaurantId: string;
 }
