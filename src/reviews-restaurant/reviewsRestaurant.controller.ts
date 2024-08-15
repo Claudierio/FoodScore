@@ -14,8 +14,8 @@ import { CreateReviewRestaurantDto } from './dto/create-reviewRestaurant.dto';
 import { UpdateReviewRestaurantDto } from './dto/update-reviewRestaurant.dto';
 import { ReviewsRestaurantService } from './reviewsRestaurant.service';
 
-@ApiTags('reviewsRestaurant')
-@Controller('reviewsRestaurant')
+@ApiTags('reviews-restaurants')
+@Controller('reviews-restaurants')
 export class ReviewsRestaurantController {
   constructor(
     private readonly reviewsRestaurantService: ReviewsRestaurantService,

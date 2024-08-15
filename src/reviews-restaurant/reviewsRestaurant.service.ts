@@ -27,6 +27,7 @@ export class ReviewsRestaurantService {
     if (!isUserExist) {
       throw new NotFoundError('Usuário não encontrado.');
     }
+
     if (!isRestExist) {
       throw new NotFoundError('Restaurante não encontrado.');
     }
@@ -40,7 +41,7 @@ export class ReviewsRestaurantService {
 
   async findAll(): Promise<ReviewRestaurantEntity[]> {
     const reviews = await this.repository.findAll();
-    if (!reviews) {
+    if (reviews.length === 0) {
       throw new NotFoundError('Nenhuma avaliação encontrada.');
     }
     return this.repository.findAll();

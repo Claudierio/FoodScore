@@ -5,7 +5,8 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { RestaurantsModule } from './restaurants/restaurants.module';
 import { DishesModule } from './dishes/dishes.module';
-import { ReviewsRestaurantModule } from './reviewsRestaurant/reviewsRestaurant.module';
+import { ReviewsDishesModule } from './reviews-dishes/reviews-dishes.module';
+import { ReviewsRestaurantModule } from './reviews-restaurant/reviewsRestaurant.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ReviewsRestaurantModule } from './reviewsRestaurant/reviewsRestaurant.m
     RestaurantsModule,
     ReviewsRestaurantModule,
     DishesModule,
+    ReviewsDishesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

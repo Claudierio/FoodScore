@@ -38,7 +38,27 @@ export class RestaurantsRepository {
             },
           },
         },
-        dishes: true,
+        dishes: {
+          select: {
+            id: true,
+            description: true,
+            price: true,
+            reviews: {
+              select: {
+                id: true,
+                description: true,
+                rating: true,
+                user: {
+                  select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     });
   }
@@ -72,7 +92,27 @@ export class RestaurantsRepository {
             },
           },
         },
-        dishes: true,
+        dishes: {
+          select: {
+            id: true,
+            description: true,
+            price: true,
+            reviews: {
+              select: {
+                id: true,
+                description: true,
+                rating: true,
+                user: {
+                  select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     });
   }
@@ -117,7 +157,27 @@ export class RestaurantsRepository {
             },
           },
         },
-        dishes: true,
+        dishes: {
+          select: {
+            id: true,
+            description: true,
+            price: true,
+            reviews: {
+              select: {
+                id: true,
+                description: true,
+                rating: true,
+                user: {
+                  select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     });
   }

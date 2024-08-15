@@ -70,3 +70,5 @@ model ReviewDish {
   updatedAt    DateTime    @updatedAt
   @@map("reviewsDishes")
 }
+
+

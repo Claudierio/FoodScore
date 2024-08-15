@@ -5,13 +5,24 @@ import { DishesRepository } from './repositories/dishes.repository';
 import { NotFoundError } from 'src/common/errors/types/NotFoundError';
 import { DishEntity } from './entities/dish.entity';
 import { BadRequestError } from 'src/common/errors/types/BadRequestError';
+import { RestaurantsRepository } from 'src/restaurants/repositories/restaurants.repository';
 
 @Injectable()
 export class DishesService {
-  constructor(private readonly repository: DishesRepository) {}
+  constructor(
+    private readonly repository: DishesRepository,
+    private readonly restaurantRespository: RestaurantsRepository,
+  ) {}
 
   async create(createDishDto: CreateDishDto): Promise<DishEntity> {
-    const { description } = createDishDto;
+    const { description, restaurantId } = createDishDto;
+    const isRestaurantExist =
+      await this.restaurantRespository.findOne(restaurantId);
+
+    if (!isRestaurantExist) {
+      throw new NotFoundError('Restaurante não encontrado.');
+    }
+
     if (description.length > 500) {
       throw new BadRequestError(
         'Descrição do prato não pode ter mais de 500 caracteres',
