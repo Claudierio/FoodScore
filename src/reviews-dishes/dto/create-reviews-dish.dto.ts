@@ -3,25 +3,25 @@ import { IsNotEmpty, IsNumber, IsString, Max, Min } from 'class-validator';
 import { IsInteger } from 'src/common/validators/is-intereger.validator';
 
 export class CreateReviewsDishDto {
-  @IsNumber()
-  @IsNotEmpty()
-  @Min(0)
-  @Max(5)
-  @IsInteger()
+  @IsNumber({}, { message: 'Nota tem que ser do tipo number' })
+  @IsNotEmpty({ message: 'Nota não pode ser vazia' })
+  @Min(0, { message: 'Nota tem que ser maior ou igual a 0' })
+  @Max(5, { message: 'Nota tem que ser menor ou igual a 5' })
+  @IsInteger({ message: 'Nota tem que ser um número inteiro' })
   @ApiProperty({ description: 'Nota da avaliação.' })
   rating: number;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: 'Descrição tem que ser do tipo string' })
+  @IsNotEmpty({ message: 'Descrição não pode ser vazia' })
   @ApiProperty({ description: 'Descrição da avaliação.' })
   description: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: 'ID do usuário tem que ser do tipo string' })
+  @IsNotEmpty({ message: 'ID do usuário não pode ser vazio' })
   @ApiProperty({ description: 'ID do usuário que fez a avaliação.' })
   userId: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'ID do prato avaliado não pode ser vazio' })
   @ApiProperty({ description: 'ID do prato avaliado.' })
   dishId: string;
 }
