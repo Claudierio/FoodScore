@@ -5,6 +5,7 @@ import { ReviewsDishesRepository } from './repositories/reviews-dishes.repositor
 import { BadRequestError } from 'src/common/errors/types/BadRequestError';
 import { UsersRepository } from 'src/users/repositories/users.repository';
 import { NotFoundError } from 'src/common/errors/types/NotFoundError';
+import { ReviewsDishEntity } from './entities/reviews-dish.entity';
 
 @Injectable()
 export class ReviewsDishesService {
@@ -13,35 +14,62 @@ export class ReviewsDishesService {
     private readonly usersRepository: UsersRepository,
   ) {}
 
-  async create(createReviewsDishDto: CreateReviewsDishDto) {
+  async create(
+    createReviewsDishDto: CreateReviewsDishDto,
+  ): Promise<ReviewsDishEntity> {
     const { description, userId } = createReviewsDishDto;
 
     const isUserExist = await this.usersRepository.findOne(userId);
 
     if (!isUserExist) {
       throw new NotFoundError('Usuário não encontrado.');
-    }
-
-    if (description.length > 500) {
+    } else if (description.length > 500) {
       throw new BadRequestError('Descrição deve conter até 500 caracteres.');
     }
 
     return this.repository.create(createReviewsDishDto);
   }
 
-  async findAll() {
+  async findAll(): Promise<ReviewsDishEntity[]> {
+    const reviews = await this.repository.findAll();
+    if (reviews.length === 0) {
+      throw new NotFoundError('Nenhuma avaliação encontrada.');
+    }
+
     return await this.repository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} reviewsDish`;
+  async findOne(id: string): Promise<ReviewsDishEntity> {
+    const review = await this.repository.findOne(id);
+    if (!review) {
+      throw new NotFoundError('Avaliação não encontrada.');
+    }
+    return review;
   }
 
-  update(id: number, updateReviewsDishDto: UpdateReviewsDishDto) {
-    return `This action updates a #${id} reviewsDish`;
+  async update(
+    id: string,
+    updateReviewsDishDto: UpdateReviewsDishDto,
+  ): Promise<ReviewsDishEntity> {
+    const isExist = await this.repository.findOne(id);
+
+    const { description } = updateReviewsDishDto;
+
+    if (!isExist) {
+      throw new NotFoundError('Avaliação não encontrada.');
+    } else if (description.length > 500) {
+      throw new BadRequestError(
+        'Descrição do prato não pode ter mais de 500 caracteres',
+      );
+    }
+    return this.repository.update(id, updateReviewsDishDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} reviewsDish`;
+  async remove(id: string) {
+    const isExist = await this.repository.findOne(id);
+    if (!isExist) {
+      throw new NotFoundError('Avaliação não encontrada.');
+    }
+    return await this.repository.remove(id);
   }
 }

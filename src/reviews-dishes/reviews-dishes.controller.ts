@@ -29,7 +29,7 @@ export class ReviewsDishesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.reviewsDishesService.findOne(+id);
+    return this.reviewsDishesService.findOne(id);
   }
 
   @Patch(':id')
@@ -37,11 +37,11 @@ export class ReviewsDishesController {
     @Param('id') id: string,
     @Body() updateReviewsDishDto: UpdateReviewsDishDto,
   ) {
-    return this.reviewsDishesService.update(+id, updateReviewsDishDto);
+    return this.reviewsDishesService.update(id, updateReviewsDishDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.reviewsDishesService.remove(+id);
+    return this.reviewsDishesService.remove(id);
   }
 }

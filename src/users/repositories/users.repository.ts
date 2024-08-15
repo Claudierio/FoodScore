@@ -23,19 +23,38 @@ export class UsersRepository {
             description: true,
             createdAt: true,
             updatedAt: true,
-            user: {
-              select: {
-                id: true,
-                name: true,
-                email: true,
-              },
-            },
+
             restaurant: {
               select: {
                 id: true,
                 name: true,
                 address: true,
                 phone: true,
+              },
+            },
+          },
+        },
+        reviewsDish: {
+          select: {
+            id: true,
+            rating: true,
+            description: true,
+            createdAt: true,
+            updatedAt: true,
+
+            dish: {
+              select: {
+                id: true,
+                description: true,
+                price: true,
+                restaurant: {
+                  select: {
+                    id: true,
+                    name: true,
+                    address: true,
+                    phone: true,
+                  },
+                },
               },
             },
           },
@@ -72,6 +91,23 @@ export class UsersRepository {
             },
           },
         },
+        reviewsDish: {
+          select: {
+            id: true,
+            rating: true,
+            description: true,
+            createdAt: true,
+            updatedAt: true,
+
+            dish: {
+              select: {
+                id: true,
+                description: true,
+                price: true,
+              },
+            },
+          },
+        },
       },
     });
   }
@@ -100,6 +136,23 @@ export class UsersRepository {
                 name: true,
                 address: true,
                 phone: true,
+              },
+            },
+          },
+        },
+        reviewsDish: {
+          select: {
+            id: true,
+            rating: true,
+            description: true,
+            createdAt: true,
+            updatedAt: true,
+
+            dish: {
+              select: {
+                id: true,
+                description: true,
+                price: true,
               },
             },
           },
