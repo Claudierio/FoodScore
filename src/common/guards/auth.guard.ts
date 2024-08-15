@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
 
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      request.user = decoded; // Anexa as informações decodificadas ao objeto de requisição
+      request.user = decoded;
       return true;
     } catch (error) {
       throw new UnauthorizedException('Token de acesso inválido ou expirado.');

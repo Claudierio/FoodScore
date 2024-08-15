@@ -16,7 +16,7 @@ export class UsersRepository {
   async findAll() {
     return this.prisma.user.findMany({
       include: {
-        reviews: {
+        reviewsRestaurant: {
           select: {
             id: true,
             rating: true,
@@ -48,7 +48,7 @@ export class UsersRepository {
     return this.prisma.user.findUnique({
       where: { id },
       include: {
-        reviews: {
+        reviewsRestaurant: {
           select: {
             id: true,
             rating: true,
@@ -80,7 +80,7 @@ export class UsersRepository {
     return this.prisma.user.findUnique({
       where: { email },
       include: {
-        reviews: {
+        reviewsRestaurant: {
           select: {
             id: true,
             rating: true,
@@ -119,7 +119,7 @@ export class UsersRepository {
     return this.prisma.user.delete({
       where: { id },
       include: {
-        reviews: {
+        reviewsRestaurant: {
           select: {
             id: true,
             rating: true,
