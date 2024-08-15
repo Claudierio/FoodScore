@@ -11,6 +11,12 @@ import { BadRequestInterceptor } from './common/errors/interceptors/badrequest.i
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors({
+    origin: 'http://localhost:5173', // Permitir apenas solicitações do frontend local
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
+    credentials: true, 
+  });
+
   const config = new DocumentBuilder()
     .setTitle('FoodScore API')
     .setDescription(
@@ -35,6 +41,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new UnauthorizedInterceptor());
   app.useGlobalInterceptors(new NotFoundInterceptor());
   app.useGlobalInterceptors(new BadRequestInterceptor());
+
   await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
