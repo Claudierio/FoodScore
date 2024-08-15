@@ -1,6 +1,6 @@
-import { Review } from '@prisma/client';
+import { ReviewRestaurant } from '@prisma/client';
 
-export class ReviewEntity implements Review {
+export class ReviewRestaurantEntity implements ReviewRestaurant {
   id: string;
   rating: number;
   description: string;

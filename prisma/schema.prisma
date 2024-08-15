@@ -8,13 +8,14 @@ datasource db {
 }
 
 model User {
-  id        String      @id @default(uuid())
-  name      String
-  email     String      @unique
-  password  String
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  reviews   Review[] // Relação de 1 para N (1 usuário pode ter várias avaliações)
+  id                  String      @id @default(uuid())
+  name                String
+  email               String      @unique
+  password            String
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+  reviewsRestaurant   ReviewRestaurant[]    // Relação de 1 para N (1 usuário pode ter várias avaliações)
+  reviewsDish         ReviewDish[]          // Relação de 1 para N (1 usuário pode ter várias avaliações)
   @@map("users")
 }
 
@@ -25,35 +26,49 @@ model Restaurant {
   phone     String      @unique
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
-  reviews   Review[] // Relação de 1 para N (1 restaurante pode ter várias avaliações)
-  dishes    Dish[]   // Relacionamento com o modelo Dish
+  reviews   ReviewRestaurant[]    // Relação de 1 para N (1 restaurante pode ter várias avaliações)
+  dishes    Dish[]                // Relacionamento com o modelo Dish
   @@map("restaurants")
 }
 
 model Dish {
-  id           String   @id @default(uuid())
+  id           String       @id @default(uuid())
   name         String
   description  String
   price        Float
   restaurantId String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
-
+  restaurant   Restaurant   @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  reviews      ReviewDish[]    // Relação de 1 para N (1 usuário pode ter várias avaliações)
   @@map("dishes")
 }
 
 
-model Review {
+model ReviewRestaurant {
+  id           String       @id @default(uuid())
+  rating       Int 
+  description  String
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  restaurant   Restaurant   @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  restaurantId String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  @@map("reviewsRestaurants")
+}
+
+model ReviewDish {
   id           String      @id @default(uuid())
   rating       Int 
   description  String
-  user         User        @relation(fields: [userId], references: [id])
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String
-  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
-  restaurantId String
+  dish         Dish        @relation(fields: [dishId], references: [id], onDelete: Cascade)
+  dishId       String
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
-  @@map("avaliacoes")
+  @@map("reviewsDishes")
 }
+
+

@@ -13,11 +13,50 @@ export class DishesRepository {
   }
 
   async findAll(): Promise<DishEntity[]> {
-    return this.prisma.dish.findMany();
+    return this.prisma.dish.findMany({
+      include: {
+        reviews: {
+          select: {
+            id: true,
+            rating: true,
+            description: true,
+            createdAt: true,
+            updatedAt: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              },
+            },
+          },
+        },
+      },
+    });
   }
 
   async findOne(id: string): Promise<DishEntity> {
-    return this.prisma.dish.findUnique({ where: { id } });
+    return this.prisma.dish.findUnique({
+      where: { id },
+      include: {
+        reviews: {
+          select: {
+            id: true,
+            rating: true,
+            description: true,
+            createdAt: true,
+            updatedAt: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              },
+            },
+          },
+        },
+      },
+    });
   }
 
   async update(id: string, updateDishDto: UpdateDishDto): Promise<DishEntity> {
@@ -28,6 +67,26 @@ export class DishesRepository {
   }
 
   async remove(id: string): Promise<DishEntity> {
-    return this.prisma.dish.delete({ where: { id } });
+    return this.prisma.dish.delete({
+      where: { id },
+      include: {
+        reviews: {
+          select: {
+            id: true,
+            rating: true,
+            description: true,
+            createdAt: true,
+            updatedAt: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              },
+            },
+          },
+        },
+      },
+    });
   }
 }

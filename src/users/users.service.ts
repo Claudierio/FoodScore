@@ -37,6 +37,7 @@ export class UsersService {
 
   async findOne(id: string): Promise<UserEntity> {
     const user = await this.repository.findOne(id);
+
     if (!user) {
       throw new NotFoundError('Usuário não encontrado.');
     }
@@ -57,8 +58,11 @@ export class UsersService {
       throw new NotFoundError('Usuário não encontrado.');
     }
 
-    const hashedPassword = await bcrypt.hash(user.password, 10);
-    updateUserDto.password = hashedPassword;
+    if (updateUserDto.password && updateUserDto.password !== user.password) {
+      updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
+    } else {
+      updateUserDto.password = user.password;
+    }
 
     return this.repository.update(id, updateUserDto);
   }

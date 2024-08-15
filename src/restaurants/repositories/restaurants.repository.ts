@@ -38,6 +38,27 @@ export class RestaurantsRepository {
             },
           },
         },
+        dishes: {
+          select: {
+            id: true,
+            description: true,
+            price: true,
+            reviews: {
+              select: {
+                id: true,
+                description: true,
+                rating: true,
+                user: {
+                  select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     });
   }
@@ -67,6 +88,27 @@ export class RestaurantsRepository {
                 name: true,
                 address: true,
                 phone: true,
+              },
+            },
+          },
+        },
+        dishes: {
+          select: {
+            id: true,
+            description: true,
+            price: true,
+            reviews: {
+              select: {
+                id: true,
+                description: true,
+                rating: true,
+                user: {
+                  select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                  },
+                },
               },
             },
           },
@@ -111,6 +153,27 @@ export class RestaurantsRepository {
                 name: true,
                 address: true,
                 phone: true,
+              },
+            },
+          },
+        },
+        dishes: {
+          select: {
+            id: true,
+            description: true,
+            price: true,
+            reviews: {
+              select: {
+                id: true,
+                description: true,
+                rating: true,
+                user: {
+                  select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                  },
+                },
               },
             },
           },
