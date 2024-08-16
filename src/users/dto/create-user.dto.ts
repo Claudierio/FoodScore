@@ -41,12 +41,13 @@ export class CreateUserDto {
   sex: Sex;
 
   @IsString({ message: 'Endereço tem que ser do tipo string' })
+  @IsNotEmpty({ message: 'O endereço não pode ser vazio' })
   @ApiProperty({ description: 'Endereço do usuário' })
   address: string;
 
   @IsString({ message: 'Telefone tem que ser do tipo string' })
-  @IsPhone({ message: 'O telefone deve estar no formato (XX) XXXXX-XXXX.' })
-  @IsNotEmpty({ message: 'O telefone não pode ser vazio' })
+  @IsPhone({ message: 'Telefone deve estar no formato (XX) XXXXX-XXXX.' })
+  @IsNotEmpty({ message: 'Telefone não pode ser vazio' })
   @ApiProperty({ description: 'Telefone do usuário' })
   phone: string;
 
