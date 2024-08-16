@@ -7,12 +7,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Sex {
+  Male
+  Female
+  Other
+}
+
 model User {
   id                  String      @id @default(uuid())
   name                String
   email               String      @unique
   password            String
   image               String?
+  sex                 Sex?      
+  address             String
+  phone               String
+  birthdate           DateTime    
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
   reviewsRestaurant   ReviewRestaurant[]    // Relação de 1 para N (1 usuário pode ter várias avaliações)
