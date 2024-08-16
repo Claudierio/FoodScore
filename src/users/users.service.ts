@@ -15,7 +15,7 @@ export class UsersService {
   constructor(private readonly repository: UsersRepository) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserEntity> {
-    const { email, password } = createUserDto;
+    const { email, password, image, name } = createUserDto;
     const userExists = await this.repository.findByEmail(email);
     if (userExists) {
       throw new ConflictError('Email já está em uso.');
@@ -23,8 +23,14 @@ export class UsersService {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     createUserDto.password = hashedPassword;
+    const user = {
+      name,
+      email,
+      password: hashedPassword,
+      image,
+    };
 
-    return this.repository.create(createUserDto);
+    return this.repository.create(user);
   }
 
   async findAll(): Promise<UserEntity[]> {
@@ -96,7 +102,7 @@ export class UsersService {
     );
 
     return {
-      data: user,
+      user: user,
       message: 'Login efetuado com sucesso',
       token,
       name: user.name,
