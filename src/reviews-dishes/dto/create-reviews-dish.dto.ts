@@ -5,7 +5,7 @@ import { IsInteger } from 'src/common/validators/is-intereger.validator';
 export class CreateReviewsDishDto {
   @IsNumber({}, { message: 'Nota tem que ser do tipo number' })
   @IsNotEmpty({ message: 'Nota não pode ser vazia' })
-  @Min(0, { message: 'Nota tem que ser maior ou igual a 0' })
+  @Min(1, { message: 'Nota tem que ser maior ou igual a 1' })
   @Max(5, { message: 'Nota tem que ser menor ou igual a 5' })
   @IsInteger({ message: 'Nota tem que ser um número inteiro' })
   @ApiProperty({ description: 'Nota da avaliação.' })

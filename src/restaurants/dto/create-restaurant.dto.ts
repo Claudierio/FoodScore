@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { IsPhone } from 'src/common/validators/is-phone.validator';
 
 export class CreateRestaurantDto {
@@ -18,4 +18,9 @@ export class CreateRestaurantDto {
   @IsPhone({ message: 'O telefone deve estar no formato (XX) XXXXX-XXXX.' })
   @ApiProperty({ description: 'Telefone do restaurante.' })
   phone: string;
+
+  @IsString({ message: 'Imagem do restaurante tem que ser do tipo string' })
+  @IsOptional({ message: 'Imagem do restaurante é opcional' })
+  @ApiProperty({ description: 'Imagem do restaurante.' })
+  image: string;
 }

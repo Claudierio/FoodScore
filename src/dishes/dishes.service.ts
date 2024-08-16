@@ -15,15 +15,15 @@ export class DishesService {
   ) {}
 
   async create(createDishDto: CreateDishDto): Promise<DishEntity> {
-    const { description, restaurantId } = createDishDto;
+    const { description, restaurantId, price } = createDishDto;
     const isRestaurantExist =
       await this.restaurantRespository.findOne(restaurantId);
 
     if (!isRestaurantExist) {
       throw new NotFoundError('Restaurante não encontrado.');
-    }
-
-    if (description.length > 500) {
+    } else if (price < 0) {
+      throw new BadRequestError('Preço do prato não pode ser menor que 0');
+    } else if (description.length > 500) {
       throw new BadRequestError(
         'Descrição do prato não pode ter mais de 500 caracteres',
       );
