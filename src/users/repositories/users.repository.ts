@@ -1,3 +1,4 @@
+// users.repository.ts
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -7,9 +8,26 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 export class UsersRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  private formatDate(date: string): Date {
+    return new Date(date); 
+  }
+
   async create(createUserDto: CreateUserDto) {
     return this.prisma.user.create({
-      data: createUserDto,
+      data: {
+        ...createUserDto,
+        birthdate: this.formatDate(createUserDto.birthdate),
+      },
+    });
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    return this.prisma.user.update({
+      where: { id },
+      data: {
+        ...updateUserDto,
+        birthdate: this.formatDate(updateUserDto.birthdate), 
+      },
     });
   }
 
@@ -23,7 +41,6 @@ export class UsersRepository {
             description: true,
             createdAt: true,
             updatedAt: true,
-
             restaurant: {
               select: {
                 id: true,
@@ -41,7 +58,6 @@ export class UsersRepository {
             description: true,
             createdAt: true,
             updatedAt: true,
-
             dish: {
               select: {
                 id: true,
@@ -98,7 +114,6 @@ export class UsersRepository {
             description: true,
             createdAt: true,
             updatedAt: true,
-
             dish: {
               select: {
                 id: true,
@@ -147,7 +162,6 @@ export class UsersRepository {
             description: true,
             createdAt: true,
             updatedAt: true,
-
             dish: {
               select: {
                 id: true,
@@ -158,13 +172,6 @@ export class UsersRepository {
           },
         },
       },
-    });
-  }
-
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    return this.prisma.user.update({
-      where: { id },
-      data: updateUserDto,
     });
   }
 

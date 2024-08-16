@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsDateString, IsEnum } from 'class-validator';
+
+export enum Sex {
+  Male = 'Male',
+  Female = 'Female',
+  Other = 'Other',
+}
 
 export class CreateUserDto {
   @IsString({ message: 'Nome tem que ser do tipo string' })
@@ -21,4 +27,21 @@ export class CreateUserDto {
   @IsOptional({ message: 'Imagem do usuário é opcional' })
   @ApiProperty({ description: 'Imagem do usuário.' })
   image: string;
+
+  @IsOptional()
+  @IsEnum(Sex, { message: 'Sexo deve ser do tipo Male, Female, ou Other' })
+  @ApiProperty({ description: 'Sexo do usuário', enum: Sex, required: false })
+  sex: Sex;
+
+  @IsString({ message: 'Endereço tem que ser do tipo string' })
+  @ApiProperty({ description: 'Endereço do usuário' })
+  address: string;
+
+  @IsString({ message: 'Telefone tem que ser do tipo string' })
+  @ApiProperty({ description: 'Telefone do usuário'})
+  phone: string;
+
+  @IsDateString({}, { message: 'Data de nascimento deve ser uma data válida' })
+  @ApiProperty({ description: 'Data de nascimento do usuário'})
+  birthdate: string;
 }
