@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateDishDto {
   @IsString({ message: 'Nome do prato tem que ser do tipo string' })
@@ -11,6 +11,11 @@ export class CreateDishDto {
   @IsNotEmpty({ message: 'Descrição do prato não pode ser vazia' })
   @ApiProperty({ description: 'Descrição do prato.' })
   description: string;
+
+  @IsString({ message: 'Imagem do prato tem que ser do tipo string' })
+  @IsOptional({ message: 'Imagem do prato é opcional' })
+  @ApiProperty({ description: 'Imagem do prato.' })
+  image: string;
 
   @IsNumber({}, { message: 'Preço do prato tem que ser do tipo number' })
   @IsNotEmpty({ message: 'Preço do prato não pode ser vazio' })

@@ -12,6 +12,7 @@ model User {
   name                String
   email               String      @unique
   password            String
+  image               String
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
   reviewsRestaurant   ReviewRestaurant[]    // Relação de 1 para N (1 usuário pode ter várias avaliações)
@@ -24,6 +25,7 @@ model Restaurant {
   name      String
   address   String
   phone     String      @unique
+  image     String
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   reviews   ReviewRestaurant[]    // Relação de 1 para N (1 restaurante pode ter várias avaliações)
@@ -36,6 +38,7 @@ model Dish {
   name         String
   description  String
   price        Float
+  image        String
   restaurantId String
   restaurant   Restaurant   @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   createdAt    DateTime     @default(now())

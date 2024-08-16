@@ -7,6 +7,7 @@ import { ReviewsRestaurantsRepository } from './repositories/reviewsRestaurant.r
 import { CreateReviewRestaurantDto } from './dto/create-reviewRestaurant.dto';
 import { ReviewRestaurantEntity } from './entities/reviewRestaurant.entity';
 import { UpdateReviewRestaurantDto } from './dto/update-reviewRestaurant.dto';
+import { roundToNearestHalf } from 'src/common/functions/arredonde-number.function';
 
 @Injectable()
 export class ReviewsRestaurantService {
@@ -53,6 +54,25 @@ export class ReviewsRestaurantService {
       throw new NotFoundError('Avaliação não encontrada.');
     }
     return review;
+  }
+
+  async getAverageRating(restaurantId: string) {
+    const reviews = await this.repository.findAllByRestaurantId(restaurantId);
+    const totalReviews = reviews.length;
+
+    const isRestaurantExist = await this.restRepository.findOne(restaurantId);
+
+    const averageRating =
+      await this.repository.getAverageRatingByRestaurantId(restaurantId);
+    if (!isRestaurantExist) {
+      throw new NotFoundError('Restaurante não encontrado.');
+    }
+
+    return {
+      restaurantId,
+      averageRating: roundToNearestHalf(averageRating),
+      totalReviews,
+    };
   }
 
   async update(
