@@ -15,7 +15,8 @@ export class UsersService {
   constructor(private readonly repository: UsersRepository) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserEntity> {
-    const { email, password, image, name, sex, address, phone, birthdate } = createUserDto;
+    const { email, password, image, name, sex, address, phone, birthdate } =
+      createUserDto;
     const userExists = await this.repository.findByEmail(email);
     if (userExists) {
       throw new ConflictError('Email já está em uso.');
@@ -107,9 +108,7 @@ export class UsersService {
 
     return {
       user: user,
-      message: 'Login efetuado com sucesso',
       token,
-      name: user.name,
     };
   }
 }

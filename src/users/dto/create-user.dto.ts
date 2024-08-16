@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, IsDateString, IsEnum } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsDateString,
+  IsEnum,
+} from 'class-validator';
+import { IsPhone } from 'src/common/validators/is-phone.validator';
 
 export enum Sex {
   Male = 'Male',
@@ -38,10 +45,12 @@ export class CreateUserDto {
   address: string;
 
   @IsString({ message: 'Telefone tem que ser do tipo string' })
-  @ApiProperty({ description: 'Telefone do usuário'})
+  @IsPhone({ message: 'O telefone deve estar no formato (XX) XXXXX-XXXX.' })
+  @IsNotEmpty({ message: 'O telefone não pode ser vazio' })
+  @ApiProperty({ description: 'Telefone do usuário' })
   phone: string;
 
   @IsDateString({}, { message: 'Data de nascimento deve ser uma data válida' })
-  @ApiProperty({ description: 'Data de nascimento do usuário'})
+  @ApiProperty({ description: 'Data de nascimento do usuário' })
   birthdate: string;
 }
