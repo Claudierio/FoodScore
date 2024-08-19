@@ -7,6 +7,7 @@ export class DishEntity implements Dish {
   description: string;
   price: number;
   restaurantId: string;
+  mealType: string;
   createdAt: Date;
   updatedAt: Date;
 }
