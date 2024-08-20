@@ -1,11 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsNumber, IsOptional, IsEnum  } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsNumber,
+  IsOptional,
+  IsEnum,
+} from 'class-validator';
 
 export enum MealType {
   BREAKFAST = 'Café da manhã',
   LUNCH = 'Almoço',
   DINNER = 'Jantar',
-} 
+}
 
 export class CreateDishDto {
   @IsString({ message: 'Nome do prato tem que ser do tipo string' })
@@ -33,7 +39,10 @@ export class CreateDishDto {
   @ApiProperty({ description: 'ID do restaurante ao qual o prato pertence.' })
   restaurantId: string;
 
-  @IsEnum(MealType, { message: 'Tipo de refeição deve ser um dos valores definidos' })
+  @IsEnum(MealType, {
+    message:
+      'Tipo de refeição deve ser um dos valores definidos ( Café da manhã, Almoço, Jantar )',
+  })
   @IsNotEmpty({ message: 'Tipo de refeição não pode ser vazio' })
   @ApiProperty({ description: 'Tipo de refeição.' })
   mealType: MealType;

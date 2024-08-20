@@ -26,13 +26,11 @@ export class RestaurantsController {
   }
 
   @Get()
-  @UseGuards(AuthGuard)
   findAll() {
     return this.restaurantsService.findAll();
   }
 
   @Get(':id')
-  @UseGuards(AuthGuard)
   findOne(@Param('id') id: string) {
     return this.restaurantsService.findOne(id);
   }
