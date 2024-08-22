@@ -23,4 +23,14 @@ export class CreateRestaurantDto {
   @IsOptional({ message: 'Imagem do restaurante é opcional' })
   @ApiProperty({ description: 'Imagem do restaurante.' })
   image: string;
+
+  @IsString({ message: 'Horário de abertura deve ser uma string.' })
+  @IsNotEmpty({ message: 'Horário de abertura não pode ser vazio.' })
+  @ApiProperty({ description: 'Horário de abertura do restaurante.', example: '08:00' })
+  openingTime: string;
+
+  @IsString({ message: 'Horário de fechamento deve ser uma string.' })
+  @IsNotEmpty({ message: 'Horário de fechamento não pode ser vazio.' })
+  @ApiProperty({ description: 'Horário de fechamento do restaurante.', example: '22:00' })
+  closingTime: string;
 }
