@@ -36,6 +36,8 @@ model Restaurant {
   address   String
   phone     String      @unique
   image     String?
+  openingTime String      
+  closingTime String      
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   reviews   ReviewRestaurant[]    // Relação de 1 para N (1 restaurante pode ter várias avaliações)

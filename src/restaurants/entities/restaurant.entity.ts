@@ -6,6 +6,8 @@ export class RestaurantEntity implements Restaurant {
   image: string;
   address: string;
   phone: string;
+  openingTime: string; 
+  closingTime: string; 
   createdAt: Date;
   updatedAt: Date;
 }
