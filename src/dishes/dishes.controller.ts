@@ -26,13 +26,11 @@ export class DishesController {
   }
 
   @Get()
-  @UseGuards(AuthGuard)
   findAll() {
     return this.dishesService.findAll();
   }
 
   @Get(':id')
-  @UseGuards(AuthGuard)
   findOne(@Param('id') id: string) {
     return this.dishesService.findOne(id);
   }
