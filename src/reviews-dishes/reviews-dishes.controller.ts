@@ -38,7 +38,6 @@ export class ReviewsDishesController {
   }
 
   @Get(':id/average-dishes')
-  @UseGuards(AuthGuard)
   getAverageRating(@Param('id') dishId: string) {
     return this.reviewsDishesService.getAverageRating(dishId);
   }
