@@ -34,8 +34,8 @@ export class RestaurantsRepository {
                 name: true,
                 address: true,
                 phone: true,
-                openingTime: true, 
-                closingTime: true, 
+                openingTime: true,
+                closingTime: true,
               },
             },
           },
@@ -90,8 +90,8 @@ export class RestaurantsRepository {
                 name: true,
                 address: true,
                 phone: true,
-                openingTime: true, 
-                closingTime: true, 
+                openingTime: true,
+                closingTime: true,
               },
             },
           },
@@ -157,8 +157,8 @@ export class RestaurantsRepository {
                 name: true,
                 address: true,
                 phone: true,
-                openingTime: true, 
-                closingTime: true, 
+                openingTime: true,
+                closingTime: true,
               },
             },
           },
@@ -186,5 +186,8 @@ export class RestaurantsRepository {
         },
       },
     });
+  }
+  async deleteAll() {
+    return this.prisma.restaurant.deleteMany();
   }
 }

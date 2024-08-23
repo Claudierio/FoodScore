@@ -49,4 +49,10 @@ export class RestaurantsController {
   remove(@Param('id') id: string) {
     return this.restaurantsService.remove(id);
   }
+
+  @Delete()
+  @UseGuards(AuthGuard)
+  deleteAll() {
+    return this.restaurantsService.deleteAll();
+  }
 }

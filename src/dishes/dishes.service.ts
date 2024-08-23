@@ -68,4 +68,12 @@ export class DishesService {
     }
     return this.repository.remove(id);
   }
+
+  async deleteAll(): Promise<{ count: number }> {
+    const result = await this.repository.deleteAll();
+    if (result.count === 0) {
+      throw new NotFoundError('Nenhum prato encontrado para deletar.');
+    }
+    return result;
+  }
 }
