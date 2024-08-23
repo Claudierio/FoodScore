@@ -89,4 +89,7 @@ export class DishesRepository {
       },
     });
   }
+  async deleteAll() {
+    return this.prisma.dish.deleteMany();
+  }
 }

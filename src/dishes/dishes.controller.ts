@@ -46,4 +46,10 @@ export class DishesController {
   remove(@Param('id') id: string) {
     return this.dishesService.remove(id);
   }
+
+  @Delete()
+  @UseGuards(AuthGuard)
+  deleteAll() {
+    return this.dishesService.deleteAll();
+  }
 }

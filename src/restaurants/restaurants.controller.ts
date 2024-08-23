@@ -51,6 +51,7 @@ export class RestaurantsController {
   }
 
   @Delete()
+  @UseGuards(AuthGuard)
   deleteAll() {
     return this.restaurantsService.deleteAll();
   }
