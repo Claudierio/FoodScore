@@ -49,4 +49,9 @@ export class RestaurantsController {
   remove(@Param('id') id: string) {
     return this.restaurantsService.remove(id);
   }
+
+  @Delete()
+  deleteAll() {
+    return this.restaurantsService.deleteAll();
+  }
 }
